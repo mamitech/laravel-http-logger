@@ -32,6 +32,14 @@ todo
 
 Once you add the service provider and middleware to your Laravel application, all HTTP request should be logged to logging channel of your choice.
 
+## Test
+
+Run
+
+```sh
+./vendor/bin/phpunit
+```
+
 ## Credits
 
 -   [Mamitech](https://github.com/mamitech)

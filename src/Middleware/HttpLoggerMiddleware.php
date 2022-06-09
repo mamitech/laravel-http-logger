@@ -2,7 +2,6 @@
 
 namespace Mamitech\LaravelHttpLogger\Middleware;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
