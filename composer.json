@@ -1,0 +1,54 @@
+{
+    "name": "mamitech/laravel-http-logger",
+    "description": "Mamitech Laravel HTTP Logger",
+    "keywords": [
+        "mamitech",
+        "laravel-http-logger"
+    ],
+    "homepage": "https://github.com/mamitech/laravel-http-logger",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Arifin",
+            "email": "arifin@mamiteam.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.3|^8.0",
+        "illuminate/support": "^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mamitech\\LaravelHttpLogger\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mamitech\\LaravelHttpLogger\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mamitech\\LaravelHttpLogger\\LaravelHttpLoggerServiceProvider"
+            ],
+            "aliases": {
+                "LaravelHttpLogger": "Mamitech\\LaravelHttpLogger\\LaravelHttpLoggerFacade"
+            }
+        }
+    }
+}
