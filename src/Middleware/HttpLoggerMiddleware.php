@@ -22,7 +22,7 @@ class HttpLoggerMiddleware
         return $this->response;
     }
 
-    private function logHttpRequest()
+    protected function logHttpRequest()
     {
         if (!config('laravel-http-logger.enabled')) {
             return;
@@ -41,7 +41,7 @@ class HttpLoggerMiddleware
         }
     }
 
-    private function getLogData()
+    protected function getLogData()
     {
         $request = $this->request;
         $response = $this->response;
