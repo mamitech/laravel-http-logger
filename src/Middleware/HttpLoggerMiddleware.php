@@ -127,7 +127,7 @@ class HttpLoggerMiddleware
             }
         }
 
-        if (mb_strlen($data) > 512) {
+        if (is_string($data) && mb_strlen($data) > 512) {
             return $truncateStr;
         }
 
