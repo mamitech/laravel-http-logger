@@ -4,6 +4,7 @@ namespace Mamitech\LaravelHttpLogger\Middleware;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Mamitech\LaravelHttpLogger\Utils\DataTruncater;
 
 class HttpLoggerMiddleware
 {
@@ -48,8 +49,8 @@ class HttpLoggerMiddleware
         # only record json typed response body
         $responseContent = json_decode($response->getContent(), true) ?? '[FILTERED] non-json response';
 
-        $requestBody = $this->filterLongData($this->getRequestBody());
-        $responseBody = json_encode($this->filterResponseBody($responseContent));
+        $requestBody = DataTruncater::truncateData($this->request->getContent());
+        $responseBody = json_encode(DataTruncater::truncateData($responseContent));
 
         // Check:
         // @link https://www.elastic.co/guide/en/ecs/current/ecs-url.html
@@ -103,41 +104,5 @@ class HttpLoggerMiddleware
         }
 
         return $data;
-    }
-
-    protected function getRequestBody()
-    {
-        $content = $this->request->getContent();
-        return $this->filterLongData($content);
-    }
-
-    protected function filterLongData($data)
-    {
-        $truncateStr = '[TRUNCATED] : data is too long';
-
-        if (is_array($data)) {
-            foreach ($data as $k => $v) {
-                if (is_array($v)) {
-                    $v = serialize($v);
-                }
-
-                if (mb_strlen($v) > 512) {
-                    $data[$k] = $truncateStr;
-                }
-            }
-        }
-
-        if (is_string($data) && mb_strlen($data) > 512) {
-            return $truncateStr;
-        }
-
-        return $data;
-    }
-
-    protected function filterResponseBody($responseBody)
-    {
-        $responseBody = $this->filterLongData($responseBody);
-
-        return $responseBody;
     }
 }
