@@ -111,39 +111,30 @@ class HttpLoggerMiddleware
         return $this->filterLongData($content);
     }
 
-    protected function filterLongData($data, $depth = 0)
+    protected function filterLongData($data)
     {
+        $truncateStr = '[TRUNCATED] : data is too long';
 
-        if (
-            is_string($data) &&
-            mb_strlen($data) > 512
-        ) {
-            return '[TRUNCATED] : data is too long';
+        if (is_array($data)) {
+            foreach ($data as $k => $v) {
+                if (mb_strlen($v) > 512) {
+                    $data[$k] = $truncateStr;
+                }
+            }
         }
 
         if (
-            is_array($data) &&
-            ($depth >= 3 || mb_strlen($data) > 512)
+            mb_strlen($data) > 512
         ) {
-            return '[TRUNCATED] : data is too deep';
+            return $truncateStr;
         }
 
         return $data;
     }
 
-    protected function filterResponseBody($responseBody, $depth = 0)
+    protected function filterResponseBody($responseBody)
     {
-        $responseBody = $this->filterLongData($responseBody, $depth);
-
-        if (is_array($responseBody)) {
-            // DFS
-            // iterate each of the key and value to check the length.
-            // filter values that is too long or 3 depth stack to keep
-            // the log payload small
-            foreach ($responseBody as $k => $v) {
-                $responseBody[$k] = $this->filterResponseBody($v, $depth + 1);
-            }
-        }
+        $responseBody = $this->filterLongData($responseBody);
 
         return $responseBody;
     }
