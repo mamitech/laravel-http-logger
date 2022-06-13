@@ -117,15 +117,17 @@ class HttpLoggerMiddleware
 
         if (is_array($data)) {
             foreach ($data as $k => $v) {
+                if (is_array($v)) {
+                    $v = serialize($v);
+                }
+
                 if (mb_strlen($v) > 512) {
                     $data[$k] = $truncateStr;
                 }
             }
         }
 
-        if (
-            mb_strlen($data) > 512
-        ) {
+        if (mb_strlen($data) > 512) {
             return $truncateStr;
         }
 
