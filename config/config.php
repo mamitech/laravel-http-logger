@@ -5,5 +5,6 @@
  */
 return [
     'enabled' => true,
-    'log_channel' => 'syslog'
+    'log_channel' => 'syslog',
+    'service_name' => 'laravel'
 ];
