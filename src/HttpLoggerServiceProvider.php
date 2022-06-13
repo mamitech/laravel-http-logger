@@ -10,16 +10,16 @@ class HttpLoggerServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/config.php' => config_path('laravel-http-logger.php'),
+                __DIR__ . '/../config/config.php' => config_path('http-logger.php'),
             ], 'config');
         }
     }
 
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-http-logger');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'http-logger');
 
-        $this->app->singleton('laravel-http-logger', function () {
+        $this->app->singleton('http-logger', function () {
             return new HttpLogger;
         });
     }

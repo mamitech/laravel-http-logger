@@ -24,7 +24,7 @@ class HttpLoggerMiddleware
 
     protected function logHttpRequest()
     {
-        if (!config('laravel-http-logger.enabled')) {
+        if (!config('http-logger.enabled')) {
             return;
         }
 
@@ -35,7 +35,7 @@ class HttpLoggerMiddleware
                 return;
             }
 
-            Log::channel(config('laravel-http-logger.log_channel'))->info($jsoned);
+            Log::channel(config('http-logger.log_channel'))->info($jsoned);
         } catch (\Throwable $e) { // For PHP 7
             Log::channel('errorlog')->error($e);
         }
