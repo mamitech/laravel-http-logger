@@ -123,7 +123,7 @@ class HttpLoggerMiddleware
 
         if (
             is_array($data) &&
-            $depth >= 3
+            ($depth >= 3 || mb_strlen($data) > 512)
         ) {
             return '[TRUNCATED] : data is too deep';
         }
