@@ -21,9 +21,14 @@ class EcsFormatter extends NormalizerFormatter
             'service' => [
                 'name' => config('http-logger.service_name'),
                 'environment' => \App::environment(),
-            ],
-            'logstash_api_key' => config('logging.channels.logstash_udp.api_key'),
+            ]
         ];
+
+        $additionalData = config('http-logger.additional_ecs_data');
+        if (!empty($additionalData)) {
+            $coreFields = array_merge($coreFields, $additionalData);
+        }
+
         $logData = json_decode($record['message'], true);
         if (is_null($logData)) {
             $logData = ['message' => $record['message']];

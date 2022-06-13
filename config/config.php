@@ -6,5 +6,7 @@
 return [
     'enabled' => true,
     'log_channel' => 'syslog',
-    'service_name' => 'laravel'
+    'service_name' => 'laravel',
+
+    'additional_ecs_data' => null
 ];
