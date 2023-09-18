@@ -96,11 +96,17 @@ class HttpLoggerMiddleware
 
     protected function filterHttpLogData($data)
     {
-        $forbiddenKeys = ['authorization', 'cookie', 'password', 'token'];
+        $forbiddenKeys = config('http-logger.forbid_keys');
+
+        if (empty($forbiddenKeys)) {
+            return $data;
+        }
 
         foreach ($data as $key => $_) {
-            if (in_array($key, $forbiddenKeys)) {
-                $data[$key] = '[FILTERED]';
+            foreach($forbiddenKeys as $forbidKey) {
+                if (strpos($key, $forbidKey) !== false) {
+                    $data[$key] = '**';
+                }
             }
 
             if (is_array($data[$key])) {
