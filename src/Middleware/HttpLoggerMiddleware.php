@@ -46,11 +46,12 @@ class HttpLoggerMiddleware
     {
         $request = $this->request;
         $response = $this->response;
+
         # only record json typed response body
         $responseContent = json_decode($response->getContent(), true) ?? '[FILTERED] non-json response';
 
         $requestBody = DataTruncater::truncateData($this->request->getContent());
-        $responseBody = json_encode(DataTruncater::truncateData($responseContent));
+        $responseBody = DataTruncater::truncateData($responseContent);
 
         // Check:
         // @link https://www.elastic.co/guide/en/ecs/current/ecs-url.html
@@ -95,12 +96,16 @@ class HttpLoggerMiddleware
 
     protected function filterHttpLogData($data)
     {
-        if (isset($data['http']['request']['headers']['authorization'])) {
-            $data['http']['request']['headers']['authorization'] = '[FILTERED]';
-        }
+        $forbiddenKeys = ['authorization', 'cookie', 'password', 'token'];
 
-        if (isset($data['http']['request']['headers']['cookie'])) {
-            $data['http']['request']['headers']['cookie'] = '[FILTERED]';
+        foreach ($data as $key => $_) {
+            if (in_array($key, $forbiddenKeys)) {
+                $data[$key] = '[FILTERED]';
+            }
+
+            if (is_array($data[$key])) {
+                $data[$key] = $this->filterHttpLogData($data[$key]);
+            }
         }
 
         return $data;
