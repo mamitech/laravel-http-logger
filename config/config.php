@@ -8,5 +8,16 @@ return [
     'log_channel' => 'syslog',
     'service_name' => 'laravel',
 
-    'additional_ecs_data' => null
+    'additional_ecs_data' => null,
+
+    /**
+     * Value of the keys including a substring of one of the
+     * element in this array will be replaced with ** in log.
+     */
+    'forbid_keys' => [
+        'authorization',
+        'cookie',
+        'password',
+        'token'
+    ]
 ];
