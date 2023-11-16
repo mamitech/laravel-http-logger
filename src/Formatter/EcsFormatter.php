@@ -8,9 +8,9 @@ use Monolog\LogRecord;
 
 class EcsFormatter extends NormalizerFormatter
 {
-    public function format(LogRecord $record): string
+    public function format(LogRecord $record)
     {
-        $record = parent::format($record);
+        $formattedRecord = parent::format($record);
 
         // @link https://www.elastic.co/guide/en/ecs/current/ecs-guidelines.html
         $coreFields = [
@@ -30,9 +30,9 @@ class EcsFormatter extends NormalizerFormatter
             $coreFields = array_merge($coreFields, $additionalData);
         }
 
-        $logData = json_decode($record->message, true);
+        $logData = json_decode($formattedRecord['message'], true);
         if (is_null($logData)) {
-            $logData = ['message' => $record->message];
+            $logData = ['message' => $formattedRecord['message']];
         }
         $data = array_merge($coreFields, $logData);
 
