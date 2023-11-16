@@ -4,10 +4,11 @@ namespace Mamitech\LaravelHttpLogger\Formatter;
 
 use Carbon\Carbon;
 use Monolog\Formatter\NormalizerFormatter;
+use Monolog\LogRecord;
 
 class EcsFormatter extends NormalizerFormatter
 {
-    public function format(array $record)
+    public function format(LogRecord $record): string
     {
         $record = parent::format($record);
 
@@ -29,9 +30,9 @@ class EcsFormatter extends NormalizerFormatter
             $coreFields = array_merge($coreFields, $additionalData);
         }
 
-        $logData = json_decode($record['message'], true);
+        $logData = json_decode($record->message, true);
         if (is_null($logData)) {
-            $logData = ['message' => $record['message']];
+            $logData = ['message' => $record->message];
         }
         $data = array_merge($coreFields, $logData);
 
