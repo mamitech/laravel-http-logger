@@ -8,6 +8,10 @@ use Mamitech\LaravelHttpLogger\Utils\DataTruncater;
 
 class HttpLoggerMiddleware
 {
+    protected $request;
+    protected $response;
+    protected $duration;
+
     public function handle($request, \Closure $next)
     {
         $this->request = $request;
@@ -26,6 +30,10 @@ class HttpLoggerMiddleware
     protected function logHttpRequest()
     {
         if (!config('http-logger.enabled')) {
+            return;
+        }
+
+        if ((int) config('http-logger.sampling_rate') <= rand(0, 99)) {
             return;
         }
 

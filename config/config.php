@@ -8,6 +8,8 @@ return [
     'log_channel' => 'syslog',
     'service_name' => 'laravel',
 
+    'sampling_rate' => 100, // in percentage
+
     'additional_ecs_data' => null,
 
     /**
